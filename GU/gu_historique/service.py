@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import GUHistorique
 from .schema import GUHistoriqueSchema
@@ -41,7 +41,7 @@ class GUHistoriqueService:
         page = request.args.get('page', '')
         gu_historiques = session.query(GUHistorique)\
                 .filter(GUHistorique.deleted_at == None,
-                        User.id == current_user.id)\
+                        GUHistorique.user_id == current_user.id)\
                 .order_by(GUHistorique.created_at.desc())
 
         if (page != ''):
@@ -77,7 +77,7 @@ class GUHistoriqueService:
         
     def user_show(current_user:User | None, id: int):
         gu_historique:GUHistorique = session.query(GUHistorique)\
-            .filter(User.id == current_user.id,
+            .filter(GUHistorique.user_id == current_user.id,
                     GUHistorique.deleted_at == None,
                     GUHistorique.id == id).first()
         
@@ -175,7 +175,7 @@ class GUHistoriqueService:
     def user_update(current_user:User | None, id: int, validated_data):
         try:
             gu_historique: GUHistorique = session.query(GUHistorique).filter(
-                User.id == current_user.id,
+                GUHistorique.user_id == current_user.id,
                 GUHistorique.id == id, 
                 GUHistorique.deleted_at == None).first()
 

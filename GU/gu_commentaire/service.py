@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import GUCommentaire
 from .schema import GUCommentaireSchema
@@ -41,7 +41,7 @@ class GUCommentaireService:
         page = request.args.get('page', '')
         gu_commentaires = session.query(GUCommentaire)\
                 .filter(GUCommentaire.deleted_at == None,
-                        User.id == current_user.id)\
+                        GUCommentaire.user_id == current_user.id)\
                 .order_by(GUCommentaire.created_at.desc())
 
         if (page != ''):
@@ -77,7 +77,7 @@ class GUCommentaireService:
         
     def user_show(current_user:User | None, id: int):
         gu_commentaire:GUCommentaire = session.query(GUCommentaire)\
-            .filter(User.id == current_user.id,
+            .filter(GUCommentaire.user_id == current_user.id,
                     GUCommentaire.deleted_at == None,
                     GUCommentaire.id == id).first()
         
@@ -172,7 +172,7 @@ class GUCommentaireService:
     def user_update(current_user:User | None, id: int, validated_data):
         try:
             gu_commentaire: GUCommentaire = session.query(GUCommentaire).filter(
-                User.id == current_user.id,
+                GUCommentaire.user_id == current_user.id,
                 GUCommentaire.id == id, 
                 GUCommentaire.deleted_at == None).first()
 

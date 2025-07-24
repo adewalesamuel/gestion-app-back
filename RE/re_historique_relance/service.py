@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import REHistoriqueRelance
 from .schema import REHistoriqueRelanceSchema
@@ -12,7 +12,7 @@ from .schema import REHistoriqueRelanceSchema
 
 class REHistoriqueRelanceService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         re_historique_relance_schema = REHistoriqueRelanceSchema(many=True)
         page = request.args.get('page', '')
@@ -35,13 +35,13 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
+    def user_index(current_user: User | None):
         result = []
         re_historique_relance_schema = REHistoriqueRelanceSchema(many=True)
         page = request.args.get('page', '')
         re_historique_relances = session.query(REHistoriqueRelance)\
                 .filter(REHistoriqueRelance.deleted_at == None,
-                        User.id == current_user.id)\
+                        REHistoriqueRelance.user_id == current_user.id)\
                 .order_by(REHistoriqueRelance.created_at.desc())
 
         if (page != ''):
@@ -59,7 +59,7 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         re_historique_relance:REHistoriqueRelance = session.query(REHistoriqueRelance)\
             .filter(REHistoriqueRelance.deleted_at == None,
                     REHistoriqueRelance.id == id).first()
@@ -75,9 +75,9 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK
     @staticmethod
         
-    def user_show(current_user:User | None, id: int):
+    def user_show(current_user: User | None, id: int):
         re_historique_relance:REHistoriqueRelance = session.query(REHistoriqueRelance)\
-            .filter(User.id == current_user.id,
+            .filter(REHistoriqueRelance.user_id == current_user.id,
                     REHistoriqueRelance.deleted_at == None,
                     REHistoriqueRelance.id == id).first()
         
@@ -92,7 +92,7 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             re_historique_relance = REHistoriqueRelance(
                 re_relance_id = validated_data.re_relance_id,
@@ -118,7 +118,7 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
+    def user_store(current_user: User | None, validated_data):
         try:
             re_historique_relance = REHistoriqueRelance(
                 re_relance_id = validated_data.re_relance_id,
@@ -144,7 +144,7 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             re_historique_relance: REHistoriqueRelance = session.query(REHistoriqueRelance).filter(
                 REHistoriqueRelance.id == id, REHistoriqueRelance.deleted_at == None).first()
@@ -172,10 +172,10 @@ class REHistoriqueRelanceService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
+    def user_update(current_user: User | None, id: int, validated_data):
         try:
             re_historique_relance: REHistoriqueRelance = session.query(REHistoriqueRelance).filter(
-                User.id == current_user.id,
+                REHistoriqueRelance.user_id == current_user.id,
                 REHistoriqueRelance.id == id, 
                 REHistoriqueRelance.deleted_at == None).first()
 
@@ -204,7 +204,7 @@ class REHistoriqueRelanceService:
     
 
     @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             re_historique_relance:REHistoriqueRelance = session.query(REHistoriqueRelance)\
                 .filter(REHistoriqueRelance.deleted_at == None,
@@ -221,7 +221,7 @@ class REHistoriqueRelanceService:
         return jsonify(succss=True), HTTPStatus.OK
 
     @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
+    def user_delete(current_user: User | None, id: int):    
         try:
             re_historique_relance:REHistoriqueRelance = session.query(REHistoriqueRelance)\
                 .filter(User.deleted_at == current_user.id,

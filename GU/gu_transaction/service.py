@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import GUTransaction
 from .schema import GUTransactionSchema
@@ -41,7 +41,7 @@ class GUTransactionService:
         page = request.args.get('page', '')
         gu_transactions = session.query(GUTransaction)\
                 .filter(GUTransaction.deleted_at == None,
-                        User.id == current_user.id)\
+                        GUTransaction.user_id == current_user.id)\
                 .order_by(GUTransaction.created_at.desc())
 
         if (page != ''):
@@ -77,7 +77,7 @@ class GUTransactionService:
         
     def user_show(current_user:User | None, id: int):
         gu_transaction:GUTransaction = session.query(GUTransaction)\
-            .filter(User.id == current_user.id,
+            .filter(GUTransaction.user_id == current_user.id,
                     GUTransaction.deleted_at == None,
                     GUTransaction.id == id).first()
         
@@ -126,7 +126,6 @@ class GUTransactionService:
             gu_transaction = GUTransaction(
                 re_mode_paiement_id = validated_data.re_mode_paiement_id,
                 gu_demande_id = validated_data.gu_demande_id,
-
                 reference = validated_data.reference,
                 montant = validated_data.montant,
                 devise = validated_data.devise,
@@ -185,7 +184,7 @@ class GUTransactionService:
     def user_update(current_user:User | None, id: int, validated_data):
         try:
             gu_transaction: GUTransaction = session.query(GUTransaction).filter(
-                User.id == current_user.id,
+                GUTransaction.user_id == current_user.id,
                 GUTransaction.id == id, 
                 GUTransaction.deleted_at == None).first()
 

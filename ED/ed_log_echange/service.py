@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import EDLogEchange
 from .schema import EDLogEchangeSchema
@@ -12,7 +12,7 @@ from .schema import EDLogEchangeSchema
 
 class EDLogEchangeService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         ed_log_echange_schema = EDLogEchangeSchema(many=True)
         page = request.args.get('page', '')
@@ -35,13 +35,13 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
+    def user_index(current_user: User | None):
         result = []
         ed_log_echange_schema = EDLogEchangeSchema(many=True)
         page = request.args.get('page', '')
         ed_log_echanges = session.query(EDLogEchange)\
                 .filter(EDLogEchange.deleted_at == None,
-                        User.id == current_user.id)\
+                        EDLogEchange.user_id == current_user.id)\
                 .order_by(EDLogEchange.created_at.desc())
 
         if (page != ''):
@@ -59,7 +59,7 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         ed_log_echange:EDLogEchange = session.query(EDLogEchange)\
             .filter(EDLogEchange.deleted_at == None,
                     EDLogEchange.id == id).first()
@@ -75,9 +75,9 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK
     @staticmethod
         
-    def user_show(current_user:User | None, id: int):
+    def user_show(current_user: User | None, id: int):
         ed_log_echange:EDLogEchange = session.query(EDLogEchange)\
-            .filter(User.id == current_user.id,
+            .filter(EDLogEchange.user_id == current_user.id,
                     EDLogEchange.deleted_at == None,
                     EDLogEchange.id == id).first()
         
@@ -92,7 +92,7 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             ed_log_echange = EDLogEchange(
                 ed_api_id = validated_data.ed_api_id,
@@ -120,7 +120,7 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
+    def user_store(current_user: User | None, validated_data):
         try:
             ed_log_echange = EDLogEchange(
                 ed_api_id = validated_data.ed_api_id,
@@ -148,7 +148,7 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             ed_log_echange: EDLogEchange = session.query(EDLogEchange).filter(
                 EDLogEchange.id == id, EDLogEchange.deleted_at == None).first()
@@ -178,10 +178,10 @@ class EDLogEchangeService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
+    def user_update(current_user: User | None, id: int, validated_data):
         try:
             ed_log_echange: EDLogEchange = session.query(EDLogEchange).filter(
-                User.id == current_user.id,
+                EDLogEchange.user_id == current_user.id,
                 EDLogEchange.id == id, 
                 EDLogEchange.deleted_at == None).first()
 
@@ -212,7 +212,7 @@ class EDLogEchangeService:
     
 
     @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             ed_log_echange:EDLogEchange = session.query(EDLogEchange)\
                 .filter(EDLogEchange.deleted_at == None,
@@ -229,7 +229,7 @@ class EDLogEchangeService:
         return jsonify(succss=True), HTTPStatus.OK
 
     @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
+    def user_delete(current_user: User | None, id: int):    
         try:
             ed_log_echange:EDLogEchange = session.query(EDLogEchange)\
                 .filter(User.deleted_at == current_user.id,

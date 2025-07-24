@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import INNonConformite
 from .schema import INNonConformiteSchema
@@ -12,7 +12,7 @@ from .schema import INNonConformiteSchema
 
 class INNonConformiteService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         in_non_conformite_schema = INNonConformiteSchema(many=True)
         page = request.args.get('page', '')
@@ -35,13 +35,13 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
+    def user_index(current_user: User | None):
         result = []
         in_non_conformite_schema = INNonConformiteSchema(many=True)
         page = request.args.get('page', '')
         in_non_conformites = session.query(INNonConformite)\
                 .filter(INNonConformite.deleted_at == None,
-                        User.id == current_user.id)\
+                        INNonConformite.user_id == current_user.id)\
                 .order_by(INNonConformite.created_at.desc())
 
         if (page != ''):
@@ -59,7 +59,7 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         in_non_conformite:INNonConformite = session.query(INNonConformite)\
             .filter(INNonConformite.deleted_at == None,
                     INNonConformite.id == id).first()
@@ -75,9 +75,9 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK
     @staticmethod
         
-    def user_show(current_user:User | None, id: int):
+    def user_show(current_user: User | None, id: int):
         in_non_conformite:INNonConformite = session.query(INNonConformite)\
-            .filter(User.id == current_user.id,
+            .filter(INNonConformite.user_id == current_user.id,
                     INNonConformite.deleted_at == None,
                     INNonConformite.id == id).first()
         
@@ -92,7 +92,7 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             in_non_conformite = INNonConformite(
                 in_inspection_id = validated_data.in_inspection_id,
@@ -120,7 +120,7 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
+    def user_store(current_user: User | None, validated_data):
         try:
             in_non_conformite = INNonConformite(
                 in_inspection_id = validated_data.in_inspection_id,
@@ -148,7 +148,7 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             in_non_conformite: INNonConformite = session.query(INNonConformite).filter(
                 INNonConformite.id == id, INNonConformite.deleted_at == None).first()
@@ -178,10 +178,10 @@ class INNonConformiteService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
+    def user_update(current_user: User | None, id: int, validated_data):
         try:
             in_non_conformite: INNonConformite = session.query(INNonConformite).filter(
-                User.id == current_user.id,
+                INNonConformite.user_id == current_user.id,
                 INNonConformite.id == id, 
                 INNonConformite.deleted_at == None).first()
 
@@ -212,7 +212,7 @@ class INNonConformiteService:
     
 
     @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             in_non_conformite:INNonConformite = session.query(INNonConformite)\
                 .filter(INNonConformite.deleted_at == None,
@@ -229,7 +229,7 @@ class INNonConformiteService:
         return jsonify(succss=True), HTTPStatus.OK
 
     @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
+    def user_delete(current_user: User | None, id: int):    
         try:
             in_non_conformite:INNonConformite = session.query(INNonConformite)\
                 .filter(User.deleted_at == current_user.id,

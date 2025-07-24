@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import REPaiement
 from .schema import REPaiementSchema
@@ -12,7 +12,7 @@ from .schema import REPaiementSchema
 
 class REPaiementService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         re_paiement_schema = REPaiementSchema(many=True)
         page = request.args.get('page', '')
@@ -35,13 +35,13 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
+    def user_index(current_user: User | None):
         result = []
         re_paiement_schema = REPaiementSchema(many=True)
         page = request.args.get('page', '')
         re_paiements = session.query(REPaiement)\
                 .filter(REPaiement.deleted_at == None,
-                        User.id == current_user.id)\
+                        REPaiement.user_id == current_user.id)\
                 .order_by(REPaiement.created_at.desc())
 
         if (page != ''):
@@ -59,7 +59,7 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         re_paiement:REPaiement = session.query(REPaiement)\
             .filter(REPaiement.deleted_at == None,
                     REPaiement.id == id).first()
@@ -75,9 +75,9 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK
     @staticmethod
         
-    def user_show(current_user:User | None, id: int):
+    def user_show(current_user: User | None, id: int):
         re_paiement:REPaiement = session.query(REPaiement)\
-            .filter(User.id == current_user.id,
+            .filter(REPaiement.user_id == current_user.id,
                     REPaiement.deleted_at == None,
                     REPaiement.id == id).first()
         
@@ -92,7 +92,7 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             re_paiement = REPaiement(
                 re_ordre_recette_id = validated_data.re_ordre_recette_id,
@@ -120,7 +120,7 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
+    def user_store(current_user: User | None, validated_data):
         try:
             re_paiement = REPaiement(
                 re_ordre_recette_id = validated_data.re_ordre_recette_id,
@@ -148,7 +148,7 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             re_paiement: REPaiement = session.query(REPaiement).filter(
                 REPaiement.id == id, REPaiement.deleted_at == None).first()
@@ -178,10 +178,10 @@ class REPaiementService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
+    def user_update(current_user: User | None, id: int, validated_data):
         try:
             re_paiement: REPaiement = session.query(REPaiement).filter(
-                User.id == current_user.id,
+                REPaiement.user_id == current_user.id,
                 REPaiement.id == id, 
                 REPaiement.deleted_at == None).first()
 
@@ -212,7 +212,7 @@ class REPaiementService:
     
 
     @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             re_paiement:REPaiement = session.query(REPaiement)\
                 .filter(REPaiement.deleted_at == None,
@@ -229,7 +229,7 @@ class REPaiementService:
         return jsonify(succss=True), HTTPStatus.OK
 
     @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
+    def user_delete(current_user: User | None, id: int):    
         try:
             re_paiement:REPaiement = session.query(REPaiement)\
                 .filter(User.deleted_at == current_user.id,

@@ -40,7 +40,7 @@ class AuditLogService:
         page = request.args.get('page', '')
         audit_logs = session.query(AuditLog)\
                 .filter(AuditLog.deleted_at == None,
-                        User.id == current_user.id)\
+                        AuditLog.user_id == current_user.id)\
                 .order_by(AuditLog.created_at.desc())
 
         if (page != ''):
@@ -76,7 +76,7 @@ class AuditLogService:
         
     def user_show(current_user:User | None, id: int):
         audit_log:AuditLog = session.query(AuditLog)\
-            .filter(User.id == current_user.id,
+            .filter(AuditLog.user_id == current_user.id,
                     AuditLog.deleted_at == None,
                     AuditLog.id == id).first()
         
@@ -177,7 +177,7 @@ class AuditLogService:
     def user_update(current_user:User | None, id: int, validated_data):
         try:
             audit_log: AuditLog = session.query(AuditLog).filter(
-                User.id == current_user.id,
+                AuditLog.user_id == current_user.id,
                 AuditLog.id == id, 
                 AuditLog.deleted_at == None).first()
 
@@ -227,7 +227,7 @@ class AuditLogService:
     def user_delete(current_user:User | None, id: int):    
         try:
             audit_log:AuditLog = session.query(AuditLog)\
-                .filter(User.deleted_at == current_user.id,
+                .filter(AuditLog.user_id == current_user.id,
                         AuditLog.deleted_at == None,
                         AuditLog.id == id).first()
 

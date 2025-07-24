@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import RERemise
 from .schema import RERemiseSchema
@@ -12,7 +12,7 @@ from .schema import RERemiseSchema
 
 class RERemiseService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         re_remise_schema = RERemiseSchema(many=True)
         page = request.args.get('page', '')
@@ -35,13 +35,13 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
+    def user_index(current_user: User | None):
         result = []
         re_remise_schema = RERemiseSchema(many=True)
         page = request.args.get('page', '')
         re_remises = session.query(RERemise)\
                 .filter(RERemise.deleted_at == None,
-                        User.id == current_user.id)\
+                        RERemise.user_id == current_user.id)\
                 .order_by(RERemise.created_at.desc())
 
         if (page != ''):
@@ -59,7 +59,7 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         re_remise:RERemise = session.query(RERemise)\
             .filter(RERemise.deleted_at == None,
                     RERemise.id == id).first()
@@ -75,9 +75,9 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK
     @staticmethod
         
-    def user_show(current_user:User | None, id: int):
+    def user_show(current_user: User | None, id: int):
         re_remise:RERemise = session.query(RERemise)\
-            .filter(User.id == current_user.id,
+            .filter(RERemise.user_id == current_user.id,
                     RERemise.deleted_at == None,
                     RERemise.id == id).first()
         
@@ -92,7 +92,7 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             re_remise = RERemise(
                 re_ordre_recette_id = validated_data.re_ordre_recette_id,
@@ -117,7 +117,7 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
+    def user_store(current_user: User | None, validated_data):
         try:
             re_remise = RERemise(
                 re_ordre_recette_id = validated_data.re_ordre_recette_id,
@@ -142,7 +142,7 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             re_remise: RERemise = session.query(RERemise).filter(
                 RERemise.id == id, RERemise.deleted_at == None).first()
@@ -169,10 +169,10 @@ class RERemiseService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
+    def user_update(current_user: User | None, id: int, validated_data):
         try:
             re_remise: RERemise = session.query(RERemise).filter(
-                User.id == current_user.id,
+                RERemise.user_id == current_user.id,
                 RERemise.id == id, 
                 RERemise.deleted_at == None).first()
 
@@ -200,7 +200,7 @@ class RERemiseService:
     
 
     @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             re_remise:RERemise = session.query(RERemise)\
                 .filter(RERemise.deleted_at == None,
@@ -217,7 +217,7 @@ class RERemiseService:
         return jsonify(succss=True), HTTPStatus.OK
 
     @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
+    def user_delete(current_user: User | None, id: int):    
         try:
             re_remise:RERemise = session.query(RERemise)\
                 .filter(User.deleted_at == current_user.id,

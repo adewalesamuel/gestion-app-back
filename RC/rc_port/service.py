@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import RCPort
 from .schema import RCPortSchema
@@ -12,7 +12,7 @@ from .schema import RCPortSchema
 
 class RCPortService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         rc_port_schema = RCPortSchema(many=True)
         page = request.args.get('page', '')
@@ -35,31 +35,7 @@ class RCPortService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
-        result = []
-        rc_port_schema = RCPortSchema(many=True)
-        page = request.args.get('page', '')
-        rc_ports = session.query(RCPort)\
-                .filter(RCPort.deleted_at == None,
-                        User.id == current_user.id)\
-                .order_by(RCPort.created_at.desc())
-
-        if (page != ''):
-            rc_ports = paginate(rc_ports, page=page)
-            result = rc_ports
-            result['data'] = rc_port_schema.dump(rc_ports['data'])
-        else:
-            result = rc_port_schema.dump(rc_ports.all())
-
-        response_data = {
-            'success': True,
-            'data': result
-        }
-
-        return jsonify(response_data), HTTPStatus.OK
-
-    @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         rc_port:RCPort = session.query(RCPort)\
             .filter(RCPort.deleted_at == None,
                     RCPort.id == id).first()
@@ -73,26 +49,9 @@ class RCPortService:
         }
 
         return jsonify(response_data), HTTPStatus.OK
-    @staticmethod
-        
-    def user_show(current_user:User | None, id: int):
-        rc_port:RCPort = session.query(RCPort)\
-            .filter(User.id == current_user.id,
-                    RCPort.deleted_at == None,
-                    RCPort.id == id).first()
-        
-        if rc_port is None: raise NotFound('rc_port not found')
-
-        result = RCPortSchema().dump(rc_port)
-        response_data = {
-            'success': True,
-            'data': result
-        }
-
-        return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             rc_port = RCPort(
                 rc_pays_id = validated_data.rc_pays_id,
@@ -117,33 +76,7 @@ class RCPortService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
-        try:
-            rc_port = RCPort(
-                rc_pays_id = validated_data.rc_pays_id,
-                nom = validated_data.nom,
-                code = validated_data.code,
-                capacite_accueil = validated_data.capacite_accueil,
-                profondeur_max = validated_data.profondeur_max,
-                
-                user_id = current_user.id,
-            )
-
-            session.add(rc_port)
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            raise BadRequest(str(e))
-        
-        response_data = {
-            'success': True,
-            'data': RCPortSchema().dump(validated_data)
-        }
-
-        return jsonify(response_data), HTTPStatus.OK
-
-    @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             rc_port: RCPort = session.query(RCPort).filter(
                 RCPort.id == id, RCPort.deleted_at == None).first()
@@ -170,61 +103,11 @@ class RCPortService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
-        try:
-            rc_port: RCPort = session.query(RCPort).filter(
-                User.id == current_user.id,
-                RCPort.id == id, 
-                RCPort.deleted_at == None).first()
-
-            if rc_port is None: raise NotFound('rc_port not found')
-
-            rc_port.rc_pays_id = validated_data.rc_pays_id
-            rc_port.nom = validated_data.nom
-            rc_port.code = validated_data.code
-            rc_port.capacite_accueil = validated_data.capacite_accueil
-            rc_port.profondeur_max = validated_data.profondeur_max
-            
-            rc_port.user_id = current_user.id
-
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            raise BadRequest(str(e))
-        
-        response_data = {
-            'success': True,
-            'data': RCPortSchema().dump(validated_data)
-        }
-
-        return jsonify(response_data), HTTPStatus.OK
-    
-
-    @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             rc_port:RCPort = session.query(RCPort)\
                 .filter(RCPort.deleted_at == None,
                         RCPort.id == id).first()
-            if rc_port is None: raise NotFound('rc_port not found')
-
-            rc_port.deleted_at = datetime.datetime.now(datetime.timezone.utc)
-
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            raise BadRequest(str(e))
-        
-        return jsonify(succss=True), HTTPStatus.OK
-
-    @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
-        try:
-            rc_port:RCPort = session.query(RCPort)\
-                .filter(User.deleted_at == current_user.id,
-                        RCPort.deleted_at == None,
-                        RCPort.id == id).first()
-
             if rc_port is None: raise NotFound('rc_port not found')
 
             rc_port.deleted_at = datetime.datetime.now(datetime.timezone.utc)

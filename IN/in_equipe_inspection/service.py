@@ -4,7 +4,7 @@ from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
 from ...utils import paginate
-#from ...admin.model import Admin
+#from ..admin.model import Admin
 from ...common_features.user.model import User
 from .model import INEquipeInspection
 from .schema import INEquipeInspectionSchema
@@ -12,7 +12,7 @@ from .schema import INEquipeInspectionSchema
 
 class INEquipeInspectionService:
     @staticmethod
-    def index(current_user:User | None):
+    def index(current_user: User | None):
         result = []
         in_equipe_inspection_schema = INEquipeInspectionSchema(many=True)
         page = request.args.get('page', '')
@@ -35,13 +35,13 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_index(current_user:User | None):
+    def user_index(current_user: User | None):
         result = []
         in_equipe_inspection_schema = INEquipeInspectionSchema(many=True)
         page = request.args.get('page', '')
         in_equipe_inspections = session.query(INEquipeInspection)\
                 .filter(INEquipeInspection.deleted_at == None,
-                        User.id == current_user.id)\
+                        INEquipeInspection.user_id == current_user.id)\
                 .order_by(INEquipeInspection.created_at.desc())
 
         if (page != ''):
@@ -59,7 +59,7 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def show(current_user:User | None, id: int):
+    def show(current_user: User | None, id: int):
         in_equipe_inspection:INEquipeInspection = session.query(INEquipeInspection)\
             .filter(INEquipeInspection.deleted_at == None,
                     INEquipeInspection.id == id).first()
@@ -75,9 +75,9 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK
     @staticmethod
         
-    def user_show(current_user:User | None, id: int):
+    def user_show(current_user: User | None, id: int):
         in_equipe_inspection:INEquipeInspection = session.query(INEquipeInspection)\
-            .filter(User.id == current_user.id,
+            .filter(INEquipeInspection.user_id == current_user.id,
                     INEquipeInspection.deleted_at == None,
                     INEquipeInspection.id == id).first()
         
@@ -92,7 +92,7 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def store(current_user:User | None, validated_data):
+    def store(current_user: User | None, validated_data):
         try:
             in_equipe_inspection = INEquipeInspection(
                 user_id = validated_data.user_id,
@@ -115,7 +115,7 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def user_store(current_user:User | None, validated_data):
+    def user_store(current_user: User | None, validated_data):
         try:
             in_equipe_inspection = INEquipeInspection(
                 nom = validated_data.nom,
@@ -138,7 +138,7 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK
 
     @staticmethod
-    def update(current_user:User | None, id: int, validated_data):
+    def update(current_user: User | None, id: int, validated_data):
         try:
             in_equipe_inspection: INEquipeInspection = session.query(INEquipeInspection).filter(
                 INEquipeInspection.id == id, INEquipeInspection.deleted_at == None).first()
@@ -163,10 +163,10 @@ class INEquipeInspectionService:
         return jsonify(response_data), HTTPStatus.OK 
 
     @staticmethod    
-    def user_update(current_user:User | None, id: int, validated_data):
+    def user_update(current_user: User | None, id: int, validated_data):
         try:
             in_equipe_inspection: INEquipeInspection = session.query(INEquipeInspection).filter(
-                User.id == current_user.id,
+                INEquipeInspection.user_id == current_user.id,
                 INEquipeInspection.id == id, 
                 INEquipeInspection.deleted_at == None).first()
 
@@ -192,7 +192,7 @@ class INEquipeInspectionService:
     
 
     @staticmethod    
-    def delete(current_user:User | None, id: int):    
+    def delete(current_user: User | None, id: int):    
         try:
             in_equipe_inspection:INEquipeInspection = session.query(INEquipeInspection)\
                 .filter(INEquipeInspection.deleted_at == None,
@@ -209,7 +209,7 @@ class INEquipeInspectionService:
         return jsonify(succss=True), HTTPStatus.OK
 
     @staticmethod    
-    def user_delete(current_user:User | None, id: int):    
+    def user_delete(current_user: User | None, id: int):    
         try:
             in_equipe_inspection:INEquipeInspection = session.query(INEquipeInspection)\
                 .filter(User.deleted_at == current_user.id,
