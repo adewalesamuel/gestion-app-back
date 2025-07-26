@@ -18,12 +18,14 @@ class INEquipeInspectionSchema(SQLAlchemySchema):
     
     @post_load
     def dump_membres(self, data, **kwargs):
-        if (data.get('membres') == '' or data.get('membres') is None): return data
-        data['membres'] = json.dumps(data['membres'])
+        if (data.get('membres') != '' and 
+        data.get('membres') is not None):
+            data['membres'] = json.dumps(data['membres'])
         return data
     
     @pre_dump
     def load_membres(self, data, **kwargs):
-        if (data.membres == '' or data.membres is None): return data
-        data.membres = json.loads(data.membres)
+        if (data.membres != '' and 
+        data.membres is not None):
+            data.membres = json.loads(data.membres)
         return data

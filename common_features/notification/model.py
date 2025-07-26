@@ -11,7 +11,7 @@ class Notification(Base):
     id = Column(BigInteger, primary_key = True)
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 'notifications')
-    titre = Column(String(225))
+    titre = Column(String(225), nullable = False)
     message = Column(Text)
     lu = Column(Boolean, default = True)
     type = Column(

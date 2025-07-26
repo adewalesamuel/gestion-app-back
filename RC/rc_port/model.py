@@ -9,7 +9,7 @@ class RCPort(Base):
     id = Column(BigInteger, primary_key = True)
     rc_pays_id = Column(BigInteger, ForeignKey('rc_payss.id', ondelete='CASCADE'), nullable = False)
     rc_pays = relationship('RCPays', back_populates = 'rc_ports')
-    nom = Column(String(225), unique = True)
+    nom = Column(String(225), unique = True, nullable = False)
     code = Column(String(225) , unique = True, nullable = False)
     capacite_accueil = Column(Integer)
     profondeur_max = Column(Numeric)

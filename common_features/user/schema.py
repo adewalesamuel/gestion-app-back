@@ -24,6 +24,6 @@ class UserSchema(SQLAlchemySchema):
 
     @post_load
     def hash_password(self, data, **kwargs):
-        if (data.get('password') == '' or data.get('password') is None): return data
-        data['password'] = crypto.hash_password(data['password'])
+        if (data.get('password') is not None):
+            data['password'] = crypto.hash_password(data['password'])
         return data

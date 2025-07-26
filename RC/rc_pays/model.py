@@ -6,10 +6,10 @@ class RCPays(Base):
     __tablename__ = 'rc_payss'
 
     id = Column(BigInteger, primary_key = True)
-    nom = Column(String(225), unique = True)
+    nom = Column(String(225), unique = True, nullable = False)
     code_iso = Column(String(225), unique = True)
     indicatif = Column(String(225), unique = True)
-    pavillon_url = Column(String(225), nullable = True)
+    pavillon_url = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

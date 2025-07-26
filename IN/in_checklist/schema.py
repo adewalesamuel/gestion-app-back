@@ -19,12 +19,14 @@ class INChecklistSchema(SQLAlchemySchema):
 
     @post_load
     def dump_items(self, data, **kwargs):
-        if (data.get('items') == '' or data.get('items') is None): return data
-        data['items'] = json.dumps(data['items'])
+        if (data.get('items') != '' and 
+        data.get('items') is not None):
+            data['items'] = json.dumps(data['items'])
         return data
     
     @pre_dump
     def load_items(self, data, **kwargs):
-        if (data.items == '' or data.items is None): return data
-        data.items = json.loads(data.items)
+        if (data.items != '' and 
+        data.items is not None):
+            data.items = json.loads(data.items)
         return data

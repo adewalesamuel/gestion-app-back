@@ -1,6 +1,6 @@
 from flask import json
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, post_load, pre_dump, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import post_load, pre_dump, validate, EXCLUDE
 from .model import EDPolitiqueAcces
 
 class EDPolitiqueAccesSchema(SQLAlchemySchema):
@@ -19,12 +19,13 @@ class EDPolitiqueAccesSchema(SQLAlchemySchema):
 
     @post_load
     def dump_regles(self, data, **kwargs):
-        if (data.get('regles') == '' or data.get('regles') is None): return data
-        data['regles'] = json.dumps(data['regles'])
+        if (data.get('regles') != '' and 
+            data.get('regles') is not None):
+            data['regles'] = json.dumps(data['regles'])
         return data
     
     @pre_dump
     def load_regles(self, data, **kwargs):
-        if (data.regles == '' or data.regles is None): return data
-        data.regles = json.loads(data.regles)
+        if (data.regles != '' and data.regles is not None):
+            data.regles = json.loads(data.regles)
         return data

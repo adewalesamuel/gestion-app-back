@@ -14,14 +14,14 @@ class INNonConformite(Base):
     in_inspection = relationship('INInspection', back_populates = 'in_non_conformites')
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 'in_non_conformites')
-    description = Column(Text, nullable = True)
+    description = Column(Text)
     gravite = Column(
         Enum(*flatten_const_values(NonConformiteGravite)),
         default = NonConformiteGravite.MINEURE
     )
     date_decouverte = Column(Date)
     heure = Column(Time)
-    date_resolution = Column(Date, nullable = True)
+    date_resolution = Column(Date)
     statut = Column(
         Enum(*flatten_const_values(NonConformiteStatut)),
         default = NonConformiteStatut.OUVERTE

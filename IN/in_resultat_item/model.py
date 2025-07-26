@@ -12,7 +12,7 @@ class INResultatItem(Base):
     conforme = Column(Boolean, default = True)
     observations = Column(Text)
     checklist_item_code = Column(String(225))
-    photo_url = Column(String(225), nullable = True)
+    photo_url = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

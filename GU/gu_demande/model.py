@@ -18,8 +18,8 @@ class GUDemande(Base):
     reference = Column(String(225))
     date_depot = Column(Date)
     heure = Column(Time)
-    date_traitement = Column(Date, nullable = True)
-    date_expiration = Column(Date, nullable = True)
+    date_traitement = Column(Date)
+    date_expiration = Column(Date)
     fichiers_joints = Column(JSON)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

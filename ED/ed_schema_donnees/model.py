@@ -8,8 +8,8 @@ class EDSchemaDonnees(Base):
     __tablename__ = 'ed_schema_donneess'
 
     id = Column(BigInteger, primary_key = True)
-    nom = Column(String(225), unique = True)
-    version = Column(String(225), nullable = True)
+    nom = Column(String(225), unique = True, nullable = False)
+    version = Column(String(225))
     schema_json = Column(JSON)
     statut = Column(
         Enum(*flatten_const_values(SchemaDonneesStatut)),

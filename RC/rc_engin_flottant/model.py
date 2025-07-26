@@ -13,7 +13,7 @@ class RCEnginFlottant(Base):
     rc_pays = relationship('RCPays', back_populates = 'rc_engin_flottants')
     rc_acteur_id = Column(BigInteger, ForeignKey('rc_acteurs.id', ondelete='CASCADE'), nullable = False)
     rc_acteur = relationship('RCActeur', back_populates = 'rc_engin_flottants')
-    nom = Column(String(225))
+    nom = Column(String(225), nullable = False)
     immatriculation = Column(String(225), unique = True)
     tonnage_brut = Column(Integer)
     longueur = Column(Numeric)

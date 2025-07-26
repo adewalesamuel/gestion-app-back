@@ -6,8 +6,8 @@ class Role(Base):
     __tablename__ = 'roles'
 
     id = Column(BigInteger, primary_key = True)
-    name = Column(String(225), unique = True)
-    description = Column(Text, nullable = True)
+    name = Column(String(225), unique = True, nullable = False)
+    description = Column(Text)
     permissions = Column(JSON)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

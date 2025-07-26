@@ -8,8 +8,8 @@ class GUCommentaire(Base):
 
     id = Column(BigInteger, primary_key = True)
     contenu = Column(Text)
-    date = Column(Date, nullable = True)
-    heure = Column(Time, nullable = True)
+    date = Column(Date)
+    heure = Column(Time)
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 'gu_commentaires')
     gu_demande_id = Column(BigInteger, ForeignKey('gu_demandes.id', ondelete='CASCADE'), nullable = False)

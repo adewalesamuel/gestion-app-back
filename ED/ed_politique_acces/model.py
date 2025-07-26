@@ -9,10 +9,10 @@ class EDPolitiqueAcces(Base):
     id = Column(BigInteger, primary_key = True)
     ed_api_id = Column(BigInteger, ForeignKey('ed_apis.id', ondelete='CASCADE'), nullable = False)
     ed_api = relationship('EDApi', back_populates = 'ed_politique_access')
-    role_id = Column(BigInteger, ForeignKey('roles.id', ondelete='CASCADE'), nullable = True)
+    role_id = Column(BigInteger, ForeignKey('roles.id', ondelete='CASCADE'))
     role = relationship('Role', back_populates = 'ed_politique_access')
-    nom = Column(String(225), unique = True)
-    regles = Column(JSON, nullable = True)
+    nom = Column(String(225), unique = True, nullable = False)
+    regles = Column(JSON)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

@@ -17,7 +17,7 @@ class GUHistorique(Base):
         Enum(*flatten_const_values(HistoriqueAction)),
         default = HistoriqueAction.CREATION
     )
-    details = Column(Text, nullable = True)
+    details = Column(Text)
     date = Column(Date)
     heure = Column(Time)
 

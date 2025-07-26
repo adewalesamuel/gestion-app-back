@@ -13,15 +13,15 @@ class RCActeur(Base):
         Enum(*flatten_const_values(ActeurType)),
         default = ActeurType.MORALE 
     )
-    nom = Column(String(225))
-    prenom = Column(String(225))
+    nom = Column(String(225), nullable = False)
+    prenom = Column(String(225), nullable = False)
     raison_sociale = Column(String(225))
     registre_commerce = Column(String(225))
     email = Column(String(225) , unique = True, nullable = False)
-    adresse = Column(String(225), nullable = True)
+    adresse = Column(String(225))
     telephone = Column(String(225), unique = True)
-    secteur_activite = Column(String(225), nullable = True)
-    pays_origine = Column(String(225), nullable = True)
+    secteur_activite = Column(String(225))
+    pays_origine = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

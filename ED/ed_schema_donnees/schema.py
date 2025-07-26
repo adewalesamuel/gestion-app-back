@@ -27,12 +27,14 @@ class EDSchemaDonneesSchema(SQLAlchemySchema):
 
     @post_load
     def dump_schema_json(self, data, **kwargs):
-        if (data.get('schema_json') == '' or data.get('schema_json') is None): return data
-        data['schema_json'] = json.dumps(data['schema_json'])
+        if (data.get('schema_json') != '' and 
+        data.get('schema_json') is not None):
+            data['schema_json'] = json.dumps(data['schema_json'])
         return data
     
     @pre_dump
     def load_schema_json(self, data, **kwargs):
-        if (data.schema_json == '' or data.schema_json is None): return data
-        data.schema_json = json.loads(data.schema_json)
+        if (data.schema_json != '' and 
+        data.schema_json is not None):
+            data.schema_json = json.loads(data.schema_json)
         return data

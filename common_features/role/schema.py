@@ -18,13 +18,15 @@ class RoleSchema(SQLAlchemySchema):
 
     @post_load
     def dump_permissions(self, data, **kwargs):
-        if (data.get('permissions') == '' or data.get('permissions') is None): return data
-        data['permissions'] = json.dumps(data['permissions'])
+        if (data.get('permissions') != '' and 
+        data.get('permissions') is not None):
+            data['permissions'] = json.dumps(data['permissions'])
         return data
     
     @pre_dump
     def load_permissions(self, data, **kwargs):
-        if (data.permissions == '' or data.permissions is None): return data
-        data.permissions = json.loads(data.permissions)
+        if (data.permissions != '' and 
+        data.permissions is not None):
+            data.permissions = json.loads(data.permissions)
         return data
     

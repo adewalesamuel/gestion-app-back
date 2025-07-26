@@ -1,6 +1,6 @@
 import datetime
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import post_load, validate, EXCLUDE
+from marshmallow import validate, EXCLUDE, pre_load
 
 from ...constants import TransactionStatut
 from ...utils import flatten_const_values
@@ -30,12 +30,12 @@ class GUTransactionSchema(SQLAlchemySchema):
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
 
-    @post_load
+    @pre_load
     def set_date_heure_transaction(self, data, **kwargs):
         today_utc_date = datetime.datetime.now(datetime.timezone.utc)
-        if (data.get('date_transaction') is not None): return data
-        data['date_transaction'] = today_utc_date.date()
-        if (data.get('heure') is not None): return data
-        data['heure'] = str(today_utc_date.time())
+        if (data.get('date_transaction') is None):
+            data['date_transaction'] = today_utc_date.date()
+        if (data.get('heure') is None):
+            data['heure'] = today_utc_date.time()
 
         return data

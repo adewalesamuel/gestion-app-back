@@ -9,7 +9,7 @@ class RCEquipement(Base):
     id = Column(BigInteger, primary_key = True)
     rc_engin_flottant_id = Column(BigInteger, ForeignKey('rc_engin_flottants.id', ondelete='CASCADE'), nullable = False)
     rc_engin_flottant = relationship('RCEnginFlottant', back_populates = 'rc_equipements')
-    nom = Column(String(225))
+    nom = Column(String(225), nullable = False)
     type = Column(String(225))
     numero_serie = Column(String(225), unique = True)
     date_installation = Column(Date)

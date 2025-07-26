@@ -12,9 +12,9 @@ class AuditLog(Base):
     action = Column(String(225))
     entite = Column(String(225))
     entite_id = Column(Integer)
-    ancienne_valeur = Column(JSON, nullable = True)
-    nouvelle_valeur = Column(JSON, nullable = True)
-    ip_address = Column(String(225), nullable = True)
+    ancienne_valeur = Column(JSON)
+    nouvelle_valeur = Column(JSON)
+    ip_address = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

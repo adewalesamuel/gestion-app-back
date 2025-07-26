@@ -1,6 +1,6 @@
 import datetime
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import post_load, validate, EXCLUDE
+from marshmallow import pre_load, validate, EXCLUDE
 from .model import GUCommentaire
 
 class GUCommentaireSchema(SQLAlchemySchema):
@@ -18,12 +18,12 @@ class GUCommentaireSchema(SQLAlchemySchema):
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
 
-    @post_load
+    @pre_load
     def set_date_heure(self, data, **kwargs):
         today_utc_date = datetime.datetime.now(datetime.timezone.utc)
         if (data.get('date') is not None): return data
         data['date'] = today_utc_date.date()
         if (data.get('heure') is not None): return data
-        data['heure'] = str(today_utc_date.time())
+        data['heure'] = today_utc_date.time()
 
         return data

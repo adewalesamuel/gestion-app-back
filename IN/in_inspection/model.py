@@ -21,7 +21,7 @@ class INInspection(Base):
     reference = Column(String(225))
     date_planifiee = Column(Date)
     heure = Column(Time)
-    date_reelle = Column(Date, nullable = True)
+    date_reelle = Column(Date)
     statut = Column(
         Enum(*flatten_const_values(InspectionStatut)),
         default = InspectionStatut.PLANIFIEE

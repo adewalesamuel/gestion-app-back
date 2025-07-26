@@ -18,7 +18,7 @@ class RCCertificat(Base):
     )
     numero = Column(String(225), unique = True)
     date_emission = Column(Date)
-    date_expiration = Column(Date, nullable = True)
+    date_expiration = Column(Date)
     organisme_emetteur = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
