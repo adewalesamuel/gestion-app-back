@@ -40,6 +40,7 @@ from .RC.rc_historique_propriete.route import route as rc_historique_propriete_b
 from .RC.rc_pays.route import route as rc_pays_blueprints
 from .RC.rc_port.route import route as rc_port_blueprints
 from .RC.rc_type_engin.route import route as rc_type_engin_blueprints
+from .RC.rc_engin_flottant.route import route as rc_engin_flottant_blueprints
 
 from .RE.re_historique_relance.route import route as re_historique_relance_blueprints
 from .RE.re_mode_paiement.route import route as re_mode_paiement_blueprints
@@ -95,6 +96,8 @@ def create_app():
     app.register_blueprint(rc_pays_blueprints)
     app.register_blueprint(rc_port_blueprints)
     app.register_blueprint(rc_type_engin_blueprints)
+    app.register_blueprint(rc_engin_flottant_blueprints)
+    
     app.register_blueprint(re_historique_relance_blueprints)
     app.register_blueprint(re_mode_paiement_blueprints)
     app.register_blueprint(re_ordre_recette_blueprints)

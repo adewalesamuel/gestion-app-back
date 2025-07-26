@@ -12,7 +12,7 @@ class REPaiementSchema(SQLAlchemySchema):
     re_ordre_recette_id = auto_field(validate=validate.Range(min=1))
     user_id = auto_field(validate=validate.Range(min=1))
     re_mode_paiement_id = auto_field(validate=validate.Range(min=1))
-    montant = auto_field(validate=validate.Length(min=1))
+    montant = auto_field(validate=validate.Range(min=1))
     devise = auto_field(validate=validate.Length(min=1))
     date_paiement = auto_field(validate=validate.Length(min=1))
     heure = auto_field()

@@ -33,3 +33,10 @@ def has_bearer_token(authorization_header: str) -> bool:
 def get_bearer_token(authorization_header: str) -> str | None:
     if (has_bearer_token(authorization_header) is False): return None
     return authorization_header.split(' ')[1]
+
+def flatten_const_values(cls):
+    attribute_list = []
+    for name, value in cls.__dict__.items():
+        if not name.startswith('__') and name.isupper():
+            attribute_list.append(value)
+    return attribute_list

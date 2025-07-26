@@ -11,7 +11,7 @@ class RERemiseSchema(SQLAlchemySchema):
     id = auto_field(dump_only=True)
     re_ordre_recette_id = auto_field(validate=validate.Range(min=1))
     user_id = auto_field(validate=validate.Range(min=1))
-    montant = auto_field(validate=validate.Length(min=1))
+    montant = auto_field(validate=validate.Range(min=1))
     pourcentage = auto_field(validate=validate.Length(min=1))
     raison = auto_field(validate=validate.Length(min=1))
     created_at = auto_field(dump_only=True)

@@ -1,5 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import validate, EXCLUDE
 from .model import RCPays
 
 class RCPaysSchema(SQLAlchemySchema):
@@ -12,6 +12,6 @@ class RCPaysSchema(SQLAlchemySchema):
     nom = auto_field(validate=validate.Length(min=1))
     code_iso = auto_field(validate=validate.Length(min=1))
     indicatif = auto_field(validate=validate.Length(min=1))
-    pavillon_url = auto_field(validate=validate.Length(min=1))
+    pavillon_url = auto_field()
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)

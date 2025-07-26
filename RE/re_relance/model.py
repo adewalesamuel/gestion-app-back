@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, BigInteger,  Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
 from ...db import Base
 
 class RERelance(Base):
@@ -11,8 +11,8 @@ class RERelance(Base):
     re_ordre_recette = relationship('REOrdreRecette', back_populates = 're_relances')
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 're_relances')
-    date = Column(Date )
-    heure = Column(String(225) )
+    date = Column(Date)
+    heure = Column(Time)
     mode = Column(Enum('pending', 'canceled', 'validated') )
     statut = Column(Enum('pending', 'canceled', 'validated') )
 

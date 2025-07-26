@@ -1,14 +1,13 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
-from sqlalchemy.orm import relationship
-from ...libs import crypto
+from sqlalchemy import Column, BigInteger,  String, Text, TIMESTAMP, JSON, func, text
+
 from ...db import Base
 
 class Role(Base):
     __tablename__ = 'roles'
 
     id = Column(BigInteger, primary_key = True)
-    name = Column(String(225) )
-    description = Column(Text )
+    name = Column(String(225), unique = True)
+    description = Column(Text, nullable = True)
     permissions = Column(JSON)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

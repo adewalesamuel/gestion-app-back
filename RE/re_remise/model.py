@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
 from ...db import Base
 
 class RERemise(Base):
@@ -11,9 +11,9 @@ class RERemise(Base):
     re_ordre_recette = relationship('REOrdreRecette', back_populates = 're_remises')
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 're_remises')
-    montant = Column(Integer )
+    montant = Column(Integer)
     pourcentage = Column(Numeric)
-    raison = Column(Text )
+    raison = Column(Text)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

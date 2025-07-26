@@ -1,7 +1,9 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, Integer, BigInteger,  String, Text, Boolean, TIMESTAMP, Enum, ForeignKey, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
+from ...utils import flatten_const_values
 from ...db import Base
+from ...constants import NotificationType
 
 class Notification(Base):
     __tablename__ = 'notifications'
@@ -9,12 +11,14 @@ class Notification(Base):
     id = Column(BigInteger, primary_key = True)
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 'notifications')
-    titre = Column(String(225) )
-    message = Column(Text )
-    lu = Column(Boolean )
-    type = Column(Enum('pending', 'canceled', 'validated') )
-    entite_type = Column(String(225) )
-    entite_id = Column(Integer )
+    titre = Column(String(225))
+    message = Column(Text)
+    lu = Column(Boolean, default = True)
+    type = Column(
+        Enum(*flatten_const_values(NotificationType)),
+        default = NotificationType.INFO)
+    entite_type = Column(String(225))
+    entite_id = Column(Integer)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

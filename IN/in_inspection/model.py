@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
+from ...constants import InspectionResultat, InspectionStatut
+from ...utils import flatten_const_values
+
 from ...db import Base
 
 class INInspection(Base):
@@ -15,12 +18,18 @@ class INInspection(Base):
     rc_engin_flottant = relationship('RCEnginFlottant', back_populates = 'in_inspections')
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 'in_inspections')
-    reference = Column(String(225) )
-    date_planifiee = Column(Date )
-    heure = Column(String(225) )
-    date_reelle = Column(Date )
-    statut = Column(Enum('pending', 'canceled', 'validated') )
-    resultat = Column(Enum('pending', 'canceled', 'validated') )
+    reference = Column(String(225))
+    date_planifiee = Column(Date)
+    heure = Column(Time)
+    date_reelle = Column(Date, nullable = True)
+    statut = Column(
+        Enum(*flatten_const_values(InspectionStatut)),
+        default = InspectionStatut.PLANIFIEE
+    )
+    resultat = Column(
+        Enum(*flatten_const_values(InspectionResultat)),
+        default = InspectionResultat.CONFORME 
+    )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

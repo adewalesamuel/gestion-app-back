@@ -1,5 +1,6 @@
+from flask import json
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import post_load, pre_dump, validate, EXCLUDE
 from .model import Role
 
 class RoleSchema(SQLAlchemySchema):
@@ -11,6 +12,19 @@ class RoleSchema(SQLAlchemySchema):
     id = auto_field(dump_only=True)
     name = auto_field(validate=validate.Length(min=1))
     description = auto_field()
-    permissions = auto_field(required=True)
+    permissions = auto_field()
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
+
+    @post_load
+    def dump_permissions(self, data, **kwargs):
+        if (data.get('permissions') == '' or data.get('permissions') is None): return data
+        data['permissions'] = json.dumps(data['permissions'])
+        return data
+    
+    @pre_dump
+    def load_permissions(self, data, **kwargs):
+        if (data.permissions == '' or data.permissions is None): return data
+        data.permissions = json.loads(data.permissions)
+        return data
+    

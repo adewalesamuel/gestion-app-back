@@ -12,6 +12,6 @@ class ConfigSystemeSchema(SQLAlchemySchema):
     parametre = auto_field(validate=validate.Length(min=1))
     valeur = auto_field(validate=validate.Length(min=1))
     module = auto_field(validate=validate.Length(min=1))
-    editable = auto_field(validate=validate.Length(min=1))
+    editable = auto_field(validate=validate.OneOf([True, False]))
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)

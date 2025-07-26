@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Date, TIMESTAMP, ForeignKey, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
 from ...db import Base
 
 class RCEnginFlottant(Base):
@@ -13,13 +13,13 @@ class RCEnginFlottant(Base):
     rc_pays = relationship('RCPays', back_populates = 'rc_engin_flottants')
     rc_acteur_id = Column(BigInteger, ForeignKey('rc_acteurs.id', ondelete='CASCADE'), nullable = False)
     rc_acteur = relationship('RCActeur', back_populates = 'rc_engin_flottants')
-    nom = Column(String(225) )
-    immatriculation = Column(String(225) )
-    tonnage_brut = Column(Integer )
+    nom = Column(String(225))
+    immatriculation = Column(String(225), unique = True)
+    tonnage_brut = Column(Integer)
     longueur = Column(Numeric)
-    annee_construction = Column(Date )
-    capacite_passagers = Column(Integer )
-    capacite_fret = Column(Integer )
+    annee_construction = Column(Date)
+    capacite_passagers = Column(Integer)
+    capacite_fret = Column(Integer)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

@@ -1,5 +1,5 @@
 from flask import abort, json, request
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, Forbidden
 from functools import wraps
 
 from . import utils
@@ -12,11 +12,12 @@ def user_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = utils.get_bearer_token(request.headers.get('authorization', ''))
-        if token is None: abort(401, description='token in missing')
+
+        if token is None: raise Unauthorized('no token found')
         try:
             data = jwt.decode_token(token)
         except jwt.exceptions.InvalidTokenError as e:
-            abort(401, description='token in invalid')
+            raise Unauthorized('token in invalid')
             
         current_user =  session.query(User).filter(
             User.id == data.get('user_id'), 
@@ -34,8 +35,8 @@ def admin_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = utils.get_bearer_token(request.headers.get('authorization', ''))
-        if token is None: raise Unauthorized('token in missing')
 
+        if token is None: raise Unauthorized('token in missing')
         try:
             data = jwt.decode_token(token)
         except jwt.exceptions.InvalidTokenError as e:
@@ -62,8 +63,8 @@ def can(permission):
                 permission not in json.loads(
                     current_user.role.permissions
                     )):
-                abort(403, description='forbidden')
-                
+                raise Forbidden('no permission found')
+
             return f(*args, **kwargs)
         return wrapper
     return decorator

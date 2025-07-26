@@ -1,22 +1,21 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, BigInteger,  String, Date, TIMESTAMP, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
 from ...db import Base
 
 class User(Base):
     __tablename__ = 'users'
 
     id = Column(BigInteger, primary_key = True)
-    role_id = Column(BigInteger, ForeignKey('roles.id', ondelete='CASCADE'), nullable = False)
+    role_id = Column(BigInteger, ForeignKey('roles.id', ondelete='CASCADE'), nullable = True)
     role = relationship('Role', back_populates = 'users')
-    rc_acteur_id = Column(BigInteger, ForeignKey('rc_acteurs.id', ondelete='CASCADE'), nullable = False)
+    rc_acteur_id = Column(BigInteger, ForeignKey('rc_acteurs.id', ondelete='CASCADE'), nullable = True)
     rc_acteur = relationship('RCActeur', back_populates = 'users')
-    profil_img_url = Column(String(225) )
-    nom = Column(String(225) )
-    email = Column(String(225) , unique = True, nullable = False)
-    password = Column(String(225) )
-    last_login_date = Column(Date )
-    last_login_heure = Column(String(225) )
+    profil_img_url = Column(String(225), nullable = True)
+    nom = Column(String(225))
+    email = Column(String(225), unique = True, nullable = False)
+    password = Column(String(225))
+    last_login_date = Column(Date, nullable=True)
+    last_login_heure = Column(Time, nullable=True)
     email_verified_at = Column(TIMESTAMP, default = None)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

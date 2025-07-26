@@ -11,7 +11,7 @@ class REOrdreRecetteSchema(SQLAlchemySchema):
     id = auto_field(dump_only=True)
     rc_acteur_id = auto_field(validate=validate.Range(min=1))
     reference = auto_field(validate=validate.Length(min=1))
-    montant = auto_field(validate=validate.Length(min=1))
+    montant = auto_field(validate=validate.Range(min=1))
     devise = auto_field(validate=validate.Length(min=1))
     date_emission = auto_field(validate=validate.Length(min=1))
     date_echeance = auto_field(validate=validate.Length(min=1))

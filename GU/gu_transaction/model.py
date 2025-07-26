@@ -1,6 +1,8 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, Integer, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
+from ...utils import flatten_const_values
+from ...constants import TransactionStatut
 from ...db import Base
 
 class GUTransaction(Base):
@@ -13,12 +15,15 @@ class GUTransaction(Base):
     gu_demande = relationship('GUDemande', back_populates = 'gu_transactions')
     user_id = Column(BigInteger, ForeignKey('users.id', ondelete='CASCADE'), nullable = False)
     user = relationship('User', back_populates = 'gu_transactions')
-    reference = Column(String(225) )
-    montant = Column(Integer )
-    devise = Column(String(225) )
-    date_transaction = Column(Date )
-    heure = Column(String(225) )
-    statut = Column(Enum('pending', 'canceled', 'validated') )
+    reference = Column(String(225))
+    montant = Column(Integer)
+    devise = Column(String(225))
+    date_transaction = Column(Date)
+    heure = Column(Time)
+    statut = Column(
+        Enum(*flatten_const_values(TransactionStatut)),
+        default = TransactionStatut.COMPLETEE
+    )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

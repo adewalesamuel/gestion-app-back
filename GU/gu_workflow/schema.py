@@ -1,5 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import validate, EXCLUDE
 from .model import GUWorkflow
 
 class GUWorkflowSchema(SQLAlchemySchema):
@@ -9,9 +9,9 @@ class GUWorkflowSchema(SQLAlchemySchema):
         unknown = EXCLUDE
 
     id = auto_field(dump_only=True)
-    etape = auto_field(validate=validate.Length(min=1))
-    ordre = auto_field(validate=validate.Length(min=1))
     role_id = auto_field(validate=validate.Range(min=1))
     gu_type_demande_id = auto_field(validate=validate.Range(min=1))
+    etape = auto_field(validate=validate.Length(min=1))
+    ordre = auto_field(validate=validate.Range(min=1))
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)

@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, BigInteger,  String, Date, TIMESTAMP, JSON, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
 from ...db import Base
 
 class GUDemande(Base):
@@ -15,11 +15,11 @@ class GUDemande(Base):
     rc_acteur = relationship('RCActeur', back_populates = 'gu_demandes')
     rc_engin_flottant_id = Column(BigInteger, ForeignKey('rc_engin_flottants.id', ondelete='CASCADE'), nullable = False)
     rc_engin_flottant = relationship('RCEnginFlottant', back_populates = 'gu_demandes')
-    reference = Column(String(225) )
-    date_depot = Column(Date )
-    heure = Column(String(225) )
-    date_traitement = Column(Date )
-    date_expiration = Column(Date )
+    reference = Column(String(225))
+    date_depot = Column(Date)
+    heure = Column(Time)
+    date_traitement = Column(Date, nullable = True)
+    date_expiration = Column(Date, nullable = True)
     fichiers_joints = Column(JSON)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

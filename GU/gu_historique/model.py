@@ -1,6 +1,8 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, BigInteger,  Text, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
+from ...utils import flatten_const_values
+from ...constants import HistoriqueAction
 from ...db import Base
 
 class GUHistorique(Base):
@@ -11,10 +13,13 @@ class GUHistorique(Base):
     user = relationship('User', back_populates = 'gu_historiques')
     gu_demande_id = Column(BigInteger, ForeignKey('gu_demandes.id', ondelete='CASCADE'), nullable = False)
     gu_demande = relationship('GUDemande', back_populates = 'gu_historiques')
-    action = Column(Enum('pending', 'canceled', 'validated') )
-    details = Column(Text )
-    date = Column(Date )
-    heure = Column(String(225) )
+    action = Column(
+        Enum(*flatten_const_values(HistoriqueAction)),
+        default = HistoriqueAction.CREATION
+    )
+    details = Column(Text, nullable = True)
+    date = Column(Date)
+    heure = Column(Time)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

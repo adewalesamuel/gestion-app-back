@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, Integer, BigInteger,  Date, TIMESTAMP, ForeignKey, func, text
 from sqlalchemy.orm import relationship
-from ...libs import crypto
+
 from ...db import Base
 
 class INPlanification(Base):
@@ -11,8 +11,8 @@ class INPlanification(Base):
     rc_engin_flottant = relationship('RCEnginFlottant', back_populates = 'in_planifications')
     in_checklist_id = Column(BigInteger, ForeignKey('in_checklists.id', ondelete='CASCADE'), nullable = False)
     in_checklist = relationship('INChecklist', back_populates = 'in_planifications')
-    periodicite_jours = Column(Integer )
-    prochaine_date = Column(Date )
+    periodicite_jours = Column(Integer)
+    prochaine_date = Column(Date)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

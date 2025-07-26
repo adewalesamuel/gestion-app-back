@@ -10,7 +10,7 @@ class RETarifSchema(SQLAlchemySchema):
 
     id = auto_field(dump_only=True)
     service = auto_field(validate=validate.Length(min=1))
-    montant = auto_field(validate=validate.Length(min=1))
+    montant = auto_field(validate=validate.Range(min=1))
     devise = auto_field(validate=validate.Length(min=1))
     frequence = auto_field(validate=validate.Length(min=1))
     type_acteur = auto_field(validate=validate.Length(min=1))

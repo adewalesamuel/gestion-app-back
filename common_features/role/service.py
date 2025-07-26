@@ -1,5 +1,5 @@
 import datetime
-from flask import abort, request, jsonify
+from flask import abort, json, request, jsonify
 from http import HTTPStatus
 from werkzeug.exceptions import NotFound, BadRequest
 from ...db import session
@@ -19,7 +19,6 @@ class RoleService:
         roles = session.query(Role)\
                 .filter(Role.deleted_at == None)\
                 .order_by(Role.created_at.desc())
-
         if (page != ''):
             roles = paginate(roles, page=page)
             result = roles

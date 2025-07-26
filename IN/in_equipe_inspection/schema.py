@@ -1,5 +1,6 @@
+import json
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import post_load, pre_dump, validate, EXCLUDE
 from .model import INEquipeInspection
 
 class INEquipeInspectionSchema(SQLAlchemySchema):
@@ -14,3 +15,15 @@ class INEquipeInspectionSchema(SQLAlchemySchema):
     membres = auto_field()
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
+    
+    @post_load
+    def dump_membres(self, data, **kwargs):
+        if (data.get('membres') == '' or data.get('membres') is None): return data
+        data['membres'] = json.dumps(data['membres'])
+        return data
+    
+    @pre_dump
+    def load_membres(self, data, **kwargs):
+        if (data.membres == '' or data.membres is None): return data
+        data.membres = json.loads(data.membres)
+        return data

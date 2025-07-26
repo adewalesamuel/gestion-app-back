@@ -1,5 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import validate, EXCLUDE
 from .model import RCEquipement
 
 class RCEquipementSchema(SQLAlchemySchema):
@@ -13,6 +13,6 @@ class RCEquipementSchema(SQLAlchemySchema):
     nom = auto_field(validate=validate.Length(min=1))
     type = auto_field(validate=validate.Length(min=1))
     numero_serie = auto_field(validate=validate.Length(min=1))
-    date_installation = auto_field(validate=validate.Length(min=1))
+    date_installation = auto_field()
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)

@@ -1,6 +1,5 @@
 from marshmallow import Schema, fields, validate, validates_schema, ValidationError
 
-
 class LoginSchema(Schema):
     email = fields.Email(validate=validate.Email())
     password = fields.Str(validate=validate.Length(min=6))

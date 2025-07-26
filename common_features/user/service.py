@@ -60,7 +60,7 @@ class UserService:
                 profil_img_url = validated_data.profil_img_url,
                 nom = validated_data.nom,
                 email = validated_data.email,
-                password = crypto.hash_password(validated_data.password),
+                password = validated_data.password,
                 last_login_date = validated_data.last_login_date,
                 last_login_heure = validated_data.last_login_heure,
                 
