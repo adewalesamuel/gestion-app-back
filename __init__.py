@@ -21,13 +21,15 @@ from .ED.ed_schema_donnees.route import route as ed_schema_donnees_blueprints
 
 from .GU.gu_commentaire.route import route as gu_commentaire_blueprints
 from .GU.gu_demande.route import route as gu_demande_blueprints
-from .GU.gu_historique.route import route as gu_historique
+from .GU.gu_historique.route import route as gu_historique_blueprints
 from .GU.gu_statut_demande.route import route as gu_statut_demande_blueprints
 from .GU.gu_transaction.route import route as gu_transaction_blueprints
 from .GU.gu_type_demande.route import route as gu_type_demande_blueprints
+from .GU.gu_workflow.route import route as gu_workflow_blueprints
 
 from .IN.in_checklist.route import route as in_checklist_blueprints
 from .IN.in_equipe_inspection.route import route as in_equipe_inspection_blueprints
+from .IN.in_inspection.route import route as in_inspection_blueprints
 from .IN.in_non_conformite.route import route as in_non_conformite_blueprints
 from .IN.in_planification.route import route as in_planification_blueprints
 from .IN.in_resultat_item.route import route as in_resultat_item_blueprints
@@ -78,12 +80,15 @@ def create_app():
 
     app.register_blueprint(gu_commentaire_blueprints)
     app.register_blueprint(gu_demande_blueprints)
+    app.register_blueprint(gu_historique_blueprints)
     app.register_blueprint(gu_statut_demande_blueprints)
     app.register_blueprint(gu_transaction_blueprints)
     app.register_blueprint(gu_type_demande_blueprints)
+    app.register_blueprint(gu_workflow_blueprints)
 
     app.register_blueprint(in_checklist_blueprints)
     app.register_blueprint(in_equipe_inspection_blueprints)
+    app.register_blueprint(in_inspection_blueprints)
     app.register_blueprint(in_non_conformite_blueprints)
     app.register_blueprint(in_planification_blueprints)
     app.register_blueprint(in_resultat_item_blueprints)
