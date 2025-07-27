@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Boolean, TIMESTAMP, func, text
 
 from ...db import Base
 
@@ -9,7 +8,7 @@ class REModePaiement(Base):
     id = Column(BigInteger, primary_key = True)
     code = Column(String(225) , unique = True, nullable = False)
     libelle = Column(String(225))
-    frais_pourcentage = Column(Integer)
+    frais_pourcentage = Column(Numeric)
     delai_jours = Column(Integer)
     actif = Column(Boolean, default = True)
 

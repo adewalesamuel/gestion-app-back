@@ -18,7 +18,7 @@ class REHistoriqueRelance(Base):
         Enum(HistoriqueRelanceMode),
         default = HistoriqueRelanceMode.email
     )
-    contenu = Column(Text)
+    contenu = Column(Text, nullable = False)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

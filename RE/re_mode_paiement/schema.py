@@ -11,7 +11,7 @@ class REModePaiementSchema(SQLAlchemySchema):
     id = auto_field(dump_only=True)
     code = auto_field(validate=validate.Length(min=1))
     libelle = auto_field(validate=validate.Length(min=1))
-    frais_pourcentage = auto_field(validate=validate.Range(min=0))
+    frais_pourcentage = auto_field(validate=validate.Range(min=0.0))
     delai_jours = auto_field(validate=validate.Range(min=0))
     actif = auto_field(validate=validate.OneOf([True, False]))
     created_at = auto_field(dump_only=True)

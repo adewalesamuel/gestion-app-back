@@ -1,5 +1,7 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError, EXCLUDE
+from marshmallow import validate, EXCLUDE
+
+from ...enums import RelanceMode, RelanceStatut
 from .model import RERelance
 
 class RERelanceSchema(SQLAlchemySchema):
@@ -13,7 +15,7 @@ class RERelanceSchema(SQLAlchemySchema):
     user_id = auto_field(validate=validate.Range(min=1))
     date = auto_field()
     heure = auto_field()
-    mode = auto_field(validate=validate.Length(min=1))
-    statut = auto_field(validate=validate.Length(min=1))
+    mode = auto_field(validate=validate.OneOf(RelanceMode))
+    statut = auto_field(validate=validate.OneOf(RelanceStatut))
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
