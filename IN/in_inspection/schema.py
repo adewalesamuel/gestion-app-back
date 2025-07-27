@@ -18,7 +18,7 @@ class INInspectionSchema(SQLAlchemySchema):
     user_id = auto_field(validate=validate.Range(min=1))
     reference = auto_field(validate=validate.Length(min=1))
     date_planifiee = auto_field()
-    heure = auto_field(validate=validate.Length(min=1))
+    heure = auto_field()
     date_reelle = auto_field()
     statut = auto_field(validate=validate.OneOf(InspectionStatut))
     resultat = auto_field(validate=validate.OneOf(InspectionResultat))

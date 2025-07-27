@@ -14,7 +14,7 @@ class REPaiementSchema(SQLAlchemySchema):
     re_mode_paiement_id = auto_field(validate=validate.Range(min=1))
     montant = auto_field(validate=validate.Range(min=1))
     devise = auto_field(validate=validate.Length(min=1))
-    date_paiement = auto_field(validate=validate.Length(min=1))
+    date_paiement = auto_field()
     heure = auto_field()
     reference_transaction = auto_field(validate=validate.Length(min=1))
     created_at = auto_field(dump_only=True)

@@ -47,6 +47,7 @@ from .RC.rc_engin_flottant.route import route as rc_engin_flottant_blueprints
 from .RE.re_historique_relance.route import route as re_historique_relance_blueprints
 from .RE.re_mode_paiement.route import route as re_mode_paiement_blueprints
 from .RE.re_ordre_recette.route import route as re_ordre_recette_blueprints
+from .RE.re_remise.route import route as re_remise_blueprints
 from .RE.re_paiement.route import route as re_paiement_blueprints
 from .RE.re_relance.route import route as re_relance_blueprints
 from .RE.re_tarif.route import route as re_tarif_blueprints
@@ -106,6 +107,7 @@ def create_app():
     app.register_blueprint(re_historique_relance_blueprints)
     app.register_blueprint(re_mode_paiement_blueprints)
     app.register_blueprint(re_ordre_recette_blueprints)
+    app.register_blueprint(re_remise_blueprints)
     app.register_blueprint(re_paiement_blueprints)
     app.register_blueprint(re_relance_blueprints)
     app.register_blueprint(re_tarif_blueprints)
