@@ -1,8 +1,8 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from marshmallow import validate, EXCLUDE
 
-from ...constants import InspectionResultat, InspectionStatut
-from ...utils import flatten_const_values
+from ...enums import InspectionResultat, InspectionStatut
+
 from .model import INInspection
 
 class INInspectionSchema(SQLAlchemySchema):
@@ -20,17 +20,7 @@ class INInspectionSchema(SQLAlchemySchema):
     date_planifiee = auto_field()
     heure = auto_field(validate=validate.Length(min=1))
     date_reelle = auto_field()
-    statut = auto_field(
-        validate=[
-            validate.Length(min=1),
-            validate.OneOf(flatten_const_values(InspectionStatut))
-        ]
-    )
-    resultat = auto_field(
-        validate=[
-            validate.Length(min=1),
-            validate.OneOf(flatten_const_values(InspectionResultat))
-        ]
-    )
+    statut = auto_field(validate=validate.OneOf(InspectionStatut))
+    resultat = auto_field(validate=validate.OneOf(InspectionResultat))
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)

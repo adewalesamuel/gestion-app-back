@@ -2,8 +2,8 @@ import datetime
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from marshmallow import validate, EXCLUDE, pre_load
 
-from ...constants import TransactionStatut
-from ...utils import flatten_const_values
+from ...enums import TransactionStatut
+
 from .model import GUTransaction
 
 class GUTransactionSchema(SQLAlchemySchema):
@@ -21,12 +21,7 @@ class GUTransactionSchema(SQLAlchemySchema):
     devise = auto_field(validate=validate.Length(min=1))
     date_transaction = auto_field(required = False)
     heure = auto_field(required = False)
-    statut = auto_field(
-        validate=[
-            validate.Length(min=1),
-            validate.OneOf(flatten_const_values(TransactionStatut))
-        ]
-    )
+    statut = auto_field(validate=validate.OneOf(TransactionStatut))
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
 

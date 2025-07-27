@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, BigInteger,  String, TIMESTAMP, Enum, func, text
 
-from ...constants import TypeControleGraviteMin
-from ...utils import flatten_const_values
+from ...enums import TypeControleGraviteMin
+
 
 from ...db import Base
 
@@ -14,8 +14,8 @@ class INTypeControle(Base):
     norme_reference = Column(String(225))
     frequence_mois = Column(Integer)
     gravite_min = Column(
-         Enum(*flatten_const_values(TypeControleGraviteMin)),
-         default = TypeControleGraviteMin.MINEURE
+         Enum(TypeControleGraviteMin),
+         default = TypeControleGraviteMin.mineure
     )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

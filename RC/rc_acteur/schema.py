@@ -1,8 +1,8 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from marshmallow import validate, EXCLUDE
 
-from ...constants import ActeurType
-from ...utils import flatten_const_values
+from ...enums import ActeurType
+
 from .model import RCActeur
 
 class RCActeurSchema(SQLAlchemySchema):
@@ -12,12 +12,7 @@ class RCActeurSchema(SQLAlchemySchema):
         unknown = EXCLUDE
 
     id = auto_field(dump_only=True)
-    type = auto_field(
-        validate=[
-            validate.Length(min=1),
-            validate.OneOf(flatten_const_values(ActeurType))
-        ]
-    )
+    type = auto_field(validate=validate.OneOf(ActeurType))
     nom = auto_field(validate=validate.Length(min=1))
     prenom = auto_field(validate=validate.Length(min=1))
     raison_sociale = auto_field(validate=validate.Length(min=1))

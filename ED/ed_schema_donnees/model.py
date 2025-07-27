@@ -1,7 +1,7 @@
 from sqlalchemy import Column, BigInteger,  String, TIMESTAMP, JSON, Enum, func, text
 
-from ...utils import flatten_const_values
-from ...constants import SchemaDonneesStatut
+
+from ...enums import SchemaDonneesStatut
 from ...db import Base
 
 class EDSchemaDonnees(Base):
@@ -12,8 +12,8 @@ class EDSchemaDonnees(Base):
     version = Column(String(225))
     schema_json = Column(JSON)
     statut = Column(
-        Enum(*flatten_const_values(SchemaDonneesStatut)),
-        default = SchemaDonneesStatut.BROUILLON
+        Enum(SchemaDonneesStatut),
+        default = SchemaDonneesStatut.brouillon
     )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

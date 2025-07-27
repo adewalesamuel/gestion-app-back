@@ -1,7 +1,7 @@
 from sqlalchemy import Column, BigInteger,  String, TIMESTAMP, Enum, func, text
 
-from ...constants import ActeurType
-from ...utils import flatten_const_values
+from ...enums import ActeurType
+
 
 from ...db import Base
 
@@ -10,8 +10,8 @@ class RCActeur(Base):
 
     id = Column(BigInteger, primary_key = True)
     type = Column(
-        Enum(*flatten_const_values(ActeurType)),
-        default = ActeurType.MORALE 
+        Enum(ActeurType),
+        default = ActeurType.morale 
     )
     nom = Column(String(225), nullable = False)
     prenom = Column(String(225), nullable = False)

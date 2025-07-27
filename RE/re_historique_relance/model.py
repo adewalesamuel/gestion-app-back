@@ -1,6 +1,7 @@
 from sqlalchemy import Column, BigInteger,  Text, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
+from ...enums import HistoriqueRelanceMode
 from ...db import Base
 
 class REHistoriqueRelance(Base):
@@ -13,7 +14,10 @@ class REHistoriqueRelance(Base):
     user = relationship('User', back_populates = 're_historique_relances')
     date = Column(Date)
     heure = Column(Time)
-    mode = Column(Enum('pending', 'canceled', 'validated') )
+    mode = Column(
+        Enum(HistoriqueRelanceMode),
+        default = HistoriqueRelanceMode.email
+    )
     contenu = Column(Text)
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

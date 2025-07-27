@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
-from ...utils import flatten_const_values
-from ...constants import TransactionStatut
+
+from ...enums import TransactionStatut
 from ...db import Base
 
 class GUTransaction(Base):
@@ -21,8 +21,8 @@ class GUTransaction(Base):
     date_transaction = Column(Date)
     heure = Column(Time)
     statut = Column(
-        Enum(*flatten_const_values(TransactionStatut)),
-        default = TransactionStatut.COMPLETEE
+        Enum(TransactionStatut),
+        default = TransactionStatut.completee
     )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

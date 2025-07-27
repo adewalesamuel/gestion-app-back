@@ -1,8 +1,8 @@
 from sqlalchemy import Column, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, func, text
 from sqlalchemy.orm import relationship
 
-from ...constants import CertificatType
-from ...utils import flatten_const_values
+from ...enums import CertificatType
+
 
 from ...db import Base
 
@@ -13,8 +13,8 @@ class RCCertificat(Base):
     rc_engin_flottant_id = Column(BigInteger, ForeignKey('rc_engin_flottants.id', ondelete='CASCADE'), nullable = False)
     rc_engin_flottant = relationship('RCEnginFlottant', back_populates = 'rc_certificats')
     type = Column(
-        Enum(*flatten_const_values(CertificatType)),
-        default = CertificatType.NAVIRE
+        Enum(CertificatType),
+        default = CertificatType.navire
     )
     numero = Column(String(225), unique = True)
     date_emission = Column(Date)

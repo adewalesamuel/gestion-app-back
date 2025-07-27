@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, BigInteger,  String, TIMESTAMP, Enum, func, text
 
+from ...enums import TarifFrequence
 from ...db import Base
 
 class RETarif(Base):
@@ -10,7 +10,10 @@ class RETarif(Base):
     service = Column(String(225))
     montant = Column(Integer)
     devise = Column(String(225))
-    frequence = Column(Enum('pending', 'canceled', 'validated') )
+    frequence = Column(
+        Enum(TarifFrequence),
+        default = TarifFrequence.mensuelle
+    )
     type_acteur = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

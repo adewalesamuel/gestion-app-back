@@ -1,8 +1,8 @@
 from sqlalchemy import Column, BigInteger,  Text, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
-from ...constants import NonConformiteGravite, NonConformiteStatut
-from ...utils import flatten_const_values
+from ...enums import NonConformiteGravite, NonConformiteStatut
+
 
 from ...db import Base
 
@@ -16,15 +16,15 @@ class INNonConformite(Base):
     user = relationship('User', back_populates = 'in_non_conformites')
     description = Column(Text)
     gravite = Column(
-        Enum(*flatten_const_values(NonConformiteGravite)),
-        default = NonConformiteGravite.MINEURE
+        Enum(NonConformiteGravite),
+        default = NonConformiteGravite.mineure
     )
     date_decouverte = Column(Date)
     heure = Column(Time)
     date_resolution = Column(Date)
     statut = Column(
-        Enum(*flatten_const_values(NonConformiteStatut)),
-        default = NonConformiteStatut.OUVERTE
+        Enum(NonConformiteStatut),
+        default = NonConformiteStatut.ouverte
     )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

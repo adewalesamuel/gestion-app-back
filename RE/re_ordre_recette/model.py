@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, Numeric, BigInteger,  String, Text, DateTime, Date, Boolean, TIMESTAMP, JSON, Enum, ForeignKey, func, text, inspect
+from sqlalchemy import Column, Integer, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, func, text
 from sqlalchemy.orm import relationship
 
+from ...enums import OrdreRecetteStatut
 from ...db import Base
 
 class REOrdreRecette(Base):
@@ -14,7 +15,10 @@ class REOrdreRecette(Base):
     devise = Column(String(225))
     date_emission = Column(Date)
     date_echeance = Column(Date)
-    statut = Column(Enum('pending', 'canceled', 'validated') )
+    statut = Column(
+        Enum(OrdreRecetteStatut),
+        default =  OrdreRecetteStatut.emis
+    )
     service_concerne = Column(String(225))
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

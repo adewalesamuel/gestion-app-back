@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
-from ...utils import flatten_const_values
-from ...constants import LogEchangeTypeRequete
+
+from ...enums import LogEchangeTypeRequete
 from ...db import Base
 
 class EDLogEchange(Base):
@@ -16,7 +16,7 @@ class EDLogEchange(Base):
     date_heure = Column(Date)
     heure = Column(Time)
     type_requete = Column(
-        Enum(*flatten_const_values(LogEchangeTypeRequete)),
+        Enum(LogEchangeTypeRequete),
         default = LogEchangeTypeRequete.GET
     )
     endpoint = Column(String(225))

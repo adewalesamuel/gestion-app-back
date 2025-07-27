@@ -1,7 +1,7 @@
 from sqlalchemy import Column, BigInteger,  String, Text, TIMESTAMP, Enum, func, text
 
-from ...utils import flatten_const_values
-from ...constants import ApiStatut
+
+from ...enums import ApiStatut
 from ...db import Base
 
 class EDApi(Base):
@@ -12,8 +12,8 @@ class EDApi(Base):
     description = Column(Text)
     url_base = Column(String(225))
     statut = Column(
-        Enum(*flatten_const_values(ApiStatut)),
-        default = ApiStatut.ACTIF
+        Enum(ApiStatut),
+        default = ApiStatut.actif
     )
     documentation_url = Column(String(225))
 

@@ -2,8 +2,8 @@ from flask import json
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from marshmallow import post_load, pre_dump, validate, EXCLUDE
 
-from ...constants import SchemaDonneesStatut
-from ...utils import flatten_const_values
+from ...enums import SchemaDonneesStatut
+
 from .model import EDSchemaDonnees
 
 class EDSchemaDonneesSchema(SQLAlchemySchema):
@@ -16,12 +16,7 @@ class EDSchemaDonneesSchema(SQLAlchemySchema):
     nom = auto_field(validate=validate.Length(min=1))
     version = auto_field()
     schema_json = auto_field()
-    statut = auto_field(
-        validate=[
-            validate.Length(min=1),
-            validate.OneOf(flatten_const_values(SchemaDonneesStatut))
-        ]
-    )
+    statut = auto_field(validate=validate.OneOf(SchemaDonneesStatut))
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
 

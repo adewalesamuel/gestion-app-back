@@ -1,8 +1,8 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from marshmallow import validate, EXCLUDE
 
-from ...constants import LogEchangeTypeRequete
-from ...utils import flatten_const_values
+from ...enums import LogEchangeTypeRequete
+
 from .model import EDLogEchange
 
 class EDLogEchangeSchema(SQLAlchemySchema):
@@ -16,12 +16,7 @@ class EDLogEchangeSchema(SQLAlchemySchema):
     user_id = auto_field(validate=validate.Range(min=1))
     date_heure = auto_field()
     heure = auto_field()
-    type_requete = auto_field(
-        validate=[
-            validate.Length(min=1),
-            validate.OneOf(flatten_const_values(LogEchangeTypeRequete))
-        ]
-    )
+    type_requete = auto_field(validate=validate.OneOf(LogEchangeTypeRequete))
     endpoint = auto_field(validate=validate.Length(min=1))
     statut_reponse = auto_field(validate=validate.Range(min=0, max=511))
     temps_reponse_ms = auto_field(validate=validate.Range(min=1))

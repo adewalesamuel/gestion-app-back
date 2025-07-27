@@ -1,6 +1,7 @@
 from sqlalchemy import Column, BigInteger,  Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
+from ...enums import RelanceMode, RelanceStatut
 from ...db import Base
 
 class RERelance(Base):
@@ -13,8 +14,14 @@ class RERelance(Base):
     user = relationship('User', back_populates = 're_relances')
     date = Column(Date)
     heure = Column(Time)
-    mode = Column(Enum('pending', 'canceled', 'validated') )
-    statut = Column(Enum('pending', 'canceled', 'validated') )
+    mode = Column(
+        Enum(RelanceMode),
+        default = RelanceMode.email
+    )
+    statut = Column(
+        Enum(RelanceStatut),
+        default = RelanceStatut.envoyee
+    )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())
     updated_at = Column(TIMESTAMP, server_default = text('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))

@@ -1,8 +1,8 @@
 from sqlalchemy import Column, BigInteger,  String, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
-from ...constants import InspectionResultat, InspectionStatut
-from ...utils import flatten_const_values
+from ...enums import InspectionResultat, InspectionStatut
+
 
 from ...db import Base
 
@@ -23,12 +23,12 @@ class INInspection(Base):
     heure = Column(Time)
     date_reelle = Column(Date)
     statut = Column(
-        Enum(*flatten_const_values(InspectionStatut)),
-        default = InspectionStatut.PLANIFIEE
+        Enum(InspectionStatut),
+        default = InspectionStatut.planifiee
     )
     resultat = Column(
-        Enum(*flatten_const_values(InspectionResultat)),
-        default = InspectionResultat.CONFORME 
+        Enum(InspectionResultat),
+        default = InspectionResultat.conforme 
     )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

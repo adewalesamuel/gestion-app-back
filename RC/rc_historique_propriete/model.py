@@ -1,8 +1,8 @@
 from sqlalchemy import Column, BigInteger,  Date, TIMESTAMP, Enum, ForeignKey, func, text
 from sqlalchemy.orm import relationship
 
-from ...constants import HistoriqueProprieteTypeTransaction
-from ...utils import flatten_const_values
+from ...enums import HistoriqueProprieteTypeTransaction
+
 
 from ...db import Base
 
@@ -17,8 +17,8 @@ class RCHistoriquePropriete(Base):
     date_debut = Column(Date)
     date_fin = Column(Date)
     type_transaction = Column(
-        Enum(*flatten_const_values(HistoriqueProprieteTypeTransaction)),
-        default = HistoriqueProprieteTypeTransaction.ACHAT
+        Enum(HistoriqueProprieteTypeTransaction),
+        default = HistoriqueProprieteTypeTransaction.achat
     )
 
     created_at = Column(TIMESTAMP, nullable = False, server_default = func.now())

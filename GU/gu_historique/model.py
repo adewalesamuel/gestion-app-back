@@ -1,8 +1,8 @@
 from sqlalchemy import Column, BigInteger,  Text, Date, TIMESTAMP, Enum, ForeignKey, Time, func, text
 from sqlalchemy.orm import relationship
 
-from ...utils import flatten_const_values
-from ...constants import HistoriqueAction
+
+from ...enums import HistoriqueAction
 from ...db import Base
 
 class GUHistorique(Base):
@@ -14,8 +14,8 @@ class GUHistorique(Base):
     gu_demande_id = Column(BigInteger, ForeignKey('gu_demandes.id', ondelete='CASCADE'), nullable = False)
     gu_demande = relationship('GUDemande', back_populates = 'gu_historiques')
     action = Column(
-        Enum(*flatten_const_values(HistoriqueAction)),
-        default = HistoriqueAction.CREATION
+        Enum(HistoriqueAction),
+        default = HistoriqueAction.creation
     )
     details = Column(Text)
     date = Column(Date)

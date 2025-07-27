@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, BigInteger,  String, TIMESTAMP, Enum, func, text
 
-from ...constants import TypeEnginCategorie
-from ...utils import flatten_const_values
+from ...enums import TypeEnginCategorie
+
 
 from ...db import Base
 
@@ -12,8 +12,8 @@ class RCTypeEngin(Base):
     code = Column(String(225) , unique = True, nullable = False)
     libelle = Column(String(225))
     categorie = Column(
-        Enum(*flatten_const_values(TypeEnginCategorie)),
-        default = TypeEnginCategorie.COMMERCE
+        Enum(TypeEnginCategorie),
+        default = TypeEnginCategorie.commerce
     )
     tonnage_min = Column(Integer)
     tonnage_max = Column(Integer)

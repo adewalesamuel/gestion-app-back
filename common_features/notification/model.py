@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, BigInteger,  String, Text, Boolean, TIMESTAMP, Enum, ForeignKey, func, text
 from sqlalchemy.orm import relationship
 
-from ...utils import flatten_const_values
+
 from ...db import Base
-from ...constants import NotificationType
+from ...enums import NotificationType
 
 class Notification(Base):
     __tablename__ = 'notifications'
@@ -15,8 +15,8 @@ class Notification(Base):
     message = Column(Text)
     lu = Column(Boolean, default = True)
     type = Column(
-        Enum(*flatten_const_values(NotificationType)),
-        default = NotificationType.INFO)
+        Enum(NotificationType),
+        default = NotificationType.info)
     entite_type = Column(String(225))
     entite_id = Column(Integer)
 
