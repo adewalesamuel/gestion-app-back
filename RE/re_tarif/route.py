@@ -15,7 +15,7 @@ route = Blueprint(
 ENDPOINT = '/re-tarifs'
 
 @route.get(f'{ENDPOINT}')
-# @user_required
+@user_required
 def index(current_user): 
     return RETarifService.index(current_user)
 
